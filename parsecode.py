@@ -9,7 +9,7 @@ parser.add_argument("--method", help="method name to extract")
 args = parser.parse_args()
 
 
-if args.file == None or args.method == None:
+if args.file is None or args.method is None:
     print "give file and method argument"
     sys.exit(1)
 
@@ -19,12 +19,12 @@ found = False
 counter = 0
 for line in string.split(content, '\n'):
 # we want a string like this: (public|private|protected (\w) <methodname>(.*^)){)
-    if re.match("[ \t]+(public|private|protected){0,1}[ ]+(static|)[ ]*[A-Za-z0-9\[\]]+ %s[ ]*\([A-Za-z0-9\[\], ]*\)[ ]*(throws [A-Za-z0-9, ]+|)\{.*" %args.method,line):
+    if re.match("[ \t]+(public|private|protected){0,1}[ ]+(static|)[ ]*[A-Za-z0-9\[\]]+ %s[ ]*\([A-Za-z0-9\[\]\., ]*\)[ ]*(throws [A-Za-z0-9, ]+|)\{.*" % args.method, line):
         found = True
 
     if found:
         print line
-        counter+=line.count('{')
-        counter-=line.count('}')
+        counter += line.count('{')
+        counter -= line.count('}')
         if counter == 0:
             found = False
